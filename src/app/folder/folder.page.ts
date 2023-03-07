@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs';
+import { ArticlesEntity } from '../interfaces/news-response';
+import { NewsapiService } from '../services/newsapi.service';
 
 @Component({
   selector: 'app-folder',
@@ -8,11 +11,20 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FolderPage implements OnInit {
   public folder!: string;
-
-  constructor(private activatedRoute: ActivatedRoute) { }
+  newsList!: ArticlesEntity[] | null | undefined;
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private newsApiService: NewsapiService
+    ) { }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    this.getTopHeadlines();
   }
-
+  getTopHeadlines(){
+    this.newsApiService
+    .getTopCountryHeadlines('nl',this.folder)
+    .pipe(map((res)=>res.articles))
+    .subscribe((news)=>(this.newsList=news))
+  }
 }
