@@ -17,6 +17,7 @@ export class FolderPage implements OnInit {
     private newsApiService: NewsapiService
     ) { }
 
+  //
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
     this.getTopHeadlines();
@@ -29,4 +30,5 @@ export class FolderPage implements OnInit {
   }
 }
 //test
+//
 //
